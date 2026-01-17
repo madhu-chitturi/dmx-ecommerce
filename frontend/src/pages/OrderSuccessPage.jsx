@@ -6,10 +6,7 @@ export default function OrderSuccessPage() {
         Thank you for choosing DMX Home Clean Products!
       </p>
 
-      <a
-        href="/"
-        className="inline-block mt-4 px-6 py-2.5 bg-primary text-white rounded-lg text-sm"
-      >
+      <a href="/" className="inline-block mt-4 px-6 py-2.5 bg-primary text-white rounded-lg text-sm">
         Continue Shopping
       </a>
     </div>
