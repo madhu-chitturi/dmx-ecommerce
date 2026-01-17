@@ -10,12 +10,18 @@ import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
 
-const app = express();
-app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:5173', process.env.CLIENT_URL],
-  credentials: true
+  origin: [
+    "https://dmx-ecommerce.vercel.app",    // production frontend
+    "http://localhost:5173"                // local vite dev
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options('*', cors());
+
 
 connectDB();
 
