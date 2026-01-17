@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
+import ProductCard from '../components/ProductCard';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -24,7 +25,10 @@ export default function Home() {
               Premium quality at an affordable price point.
             </p>
             <div>
-              <a href="/products" className="px-5 py-2.5 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90">
+              <a
+                href="/products"
+                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90"
+              >
                 Shop Now
               </a>
             </div>
@@ -40,30 +44,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* VALUE PROPS */}
-      <section className="px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-4 text-center">
-        {[
-          { title: 'Premium Formulations', desc: 'Scientifically tested cleaning power' },
-          { title: 'Affordable Pricing', desc: 'Premium performance without premium pricing' },
-          { title: 'Trusted Local Brand', desc: 'Made for Indian homes & conditions' }
-        ].map((item) => (
-          <div key={item.title} className="p-4 bg-white border rounded-xl shadow-sm">
-            <h3 className="font-medium text-gray-800">{item.title}</h3>
-            <p className="text-gray-500 text-sm mt-1">{item.desc}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* FEATURED PRODUCTS */}
+      {/* FEATURED */}
       <section className="px-6 max-w-6xl mx-auto space-y-2">
         <h2 className="text-xl font-semibold">Featured Products</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((p) => (
-            <a key={p._id} href={`/product/${p.slug}`} className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-3">
-              <img src={p.image} className="rounded-lg w-full aspect-square object-cover" />
-              <h3 className="mt-2 text-sm font-medium text-gray-800">{p.title}</h3>
-              <p className="text-primary font-semibold text-sm">₹{p.price}</p>
-            </a>
+            <ProductCard key={p._id} product={p} />
           ))}
         </div>
       </section>
