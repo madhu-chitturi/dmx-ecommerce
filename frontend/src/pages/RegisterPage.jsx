@@ -15,41 +15,38 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="p-3 max-w-md mx-auto">
-      <h1 className="font-semibold text-lg mb-3">Register</h1>
+    <div className="p-3 max-w-md mx-auto space-y-3">
+      <h1 className="text-xl font-semibold">Create Account</h1>
 
       <input
         placeholder="Full Name"
-        className="border p-2 w-full mb-2 text-sm"
+        className="border p-2 w-full rounded text-sm"
         onChange={(e) => setName(e.target.value)}
       />
 
       <input
         placeholder="Email"
-        className="border p-2 w-full mb-2 text-sm"
+        className="border p-2 w-full rounded text-sm"
         onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="border p-2 w-full mb-3 text-sm"
+        className="border p-2 w-full rounded text-sm"
         onChange={(e) => setPassword(e.target.value)}
       />
 
       <button
-        className="bg-primary text-white w-full py-2 rounded-md text-sm"
+        className="w-full py-2 bg-primary text-white rounded text-sm"
         onClick={submit}
       >
         Create Account
       </button>
 
-      <div className="text-xs text-center mt-3">
-        Already have an account?{' '}
-        <a className="text-primary" href="/login">
-          Login
-        </a>
-      </div>
+      <p className="text-xs text-center">
+        Already have an account? <a className="text-primary" href="/login">Login</a>
+      </p>
     </div>
   );
 }
