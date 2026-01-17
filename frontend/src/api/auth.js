@@ -1,6 +1,13 @@
-import client from './client';
+import axios from './axios';
 
-export const login = (data) => client.post('/auth/login', data);
-export const register = (data) => client.post('/auth/register', data);
+export const login = (payload) => {
+  return axios.post('/auth/login', payload);
+};
 
-export const adminLogin = (data) => client.post('/admin/login', data);
+export const register = (payload) => {
+  return axios.post('/auth/register', payload);
+};
+
+export const initAdmin = () => {
+  return axios.get('/admin/init');
+};
