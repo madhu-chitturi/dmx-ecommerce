@@ -14,28 +14,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="p-3 max-w-md mx-auto">
-      <h1 className="font-semibold text-lg mb-3">Login</h1>
+    <div className="p-3 max-w-md mx-auto space-y-3">
+      <h1 className="text-xl font-semibold">Login</h1>
 
       <input
         placeholder="Email"
-        className="border p-2 w-full mb-2 text-sm"
+        className="border p-2 w-full rounded text-sm"
         onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="border p-2 w-full mb-3 text-sm"
+        className="border p-2 w-full rounded text-sm"
         onChange={(e) => setPassword(e.target.value)}
       />
 
       <button
-        className="bg-primary text-white w-full py-2 rounded-md text-sm"
+        className="w-full py-2 bg-primary text-white rounded text-sm"
         onClick={submit}
       >
         Login
       </button>
+
+      <p className="text-xs text-center">
+        New user? <a className="text-primary" href="/register">Create account</a>
+      </p>
     </div>
   );
 }
