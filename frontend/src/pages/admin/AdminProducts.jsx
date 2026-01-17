@@ -1,51 +1,49 @@
 import { useEffect, useState } from 'react';
-import { fetchProducts, deleteProduct } from '../../api/products';
-import { useAuthStore } from '../../store/authStore';
+import axios from '../../api/axios';
 
 export default function AdminProducts() {
-  const [list, setList] = useState([]);
-  const adminToken = useAuthStore((s) => s.adminToken);
+  const [products, setProducts] = useState([]);
 
-  const load = () => {
-    fetchProducts().then((res) => setList(res.data));
+  const fetchProducts = async () => {
+    const res = await axios.get('/products');
+    setProducts(res.data);
   };
 
-  useEffect(load, []);
-
-  const del = async (id) => {
-    await deleteProduct(id, adminToken);
-    load();
+  const deleteProduct = async (id) => {
+    const token = localStorage.getItem('dmx_admin_token');
+    await axios.delete(`/products/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    fetchProducts();
   };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
-    <div className="p-3 max-w-3xl mx-auto">
-      <h1 className="font-semibold text-lg mb-3">Admin Products</h1>
-
-      <a
-        href="/admin/products/add"
-        className="inline-block bg-primary text-white px-3 py-1 rounded-md text-sm mb-3"
-      >
-        Add Product
-      </a>
+    <div className="p-6 max-w-5xl mx-auto space-y-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-semibold">Admin Products</h1>
+        <a href="/admin/products/new" className="px-4 py-2 bg-primary text-white text-sm rounded">
+          Add New Product
+        </a>
+      </div>
 
       <div className="space-y-3">
-        {list.map((p) => (
-          <div key={p._id} className="border border-border p-3 rounded-md flex justify-between">
-            <div>
-              <div className="font-medium text-sm">{p.title}</div>
-              <div className="text-primary text-xs">₹{p.price}</div>
+        {products.map((p) => (
+          <div key={p._id} className="border rounded-lg p-3 flex items-center gap-4">
+            <img src={p.image} className="w-20 h-20 rounded-lg object-cover" />
+            <div className="flex-1">
+              <p className="font-medium">{p.title}</p>
+              <p className="text-sm text-gray-600">₹{p.price}</p>
             </div>
-            <div className="flex gap-2 text-xs">
-              <a
-                href={`/admin/products/edit/${p._id}`}
-                className="text-blue-600 underline"
-              >
-                Edit
-              </a>
-              <button onClick={() => del(p._id)} className="text-red-600 underline">
-                Delete
-              </button>
-            </div>
+            <button
+              onClick={() => deleteProduct(p._id)}
+              className="text-red-500 text-xs"
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
