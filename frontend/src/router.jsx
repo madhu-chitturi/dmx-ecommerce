@@ -6,7 +6,7 @@ import ProductPage from './pages/ProductPage';
 import CategoriesPage from './pages/CategoriesPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
-import OrderSuccessPage from './pages/OrderSuccessPage';
+import SuccessPage from './pages/SuccessPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
