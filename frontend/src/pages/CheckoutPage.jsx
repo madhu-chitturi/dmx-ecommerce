@@ -1,45 +1,83 @@
-import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
-import { createOrder, verifyPayment } from '../api/payment';
+import { useAuthStore } from '../store/authStore';
+import { createOrder } from '../api/payments';
 
 export default function CheckoutPage() {
-  const { token, user } = useAuthStore();
-  const { items, clear } = useCartStore();
+  const { items, total } = useCartStore();
+  const { user } = useAuthStore();
 
-  const total = items.reduce((t, i) => t + i.price, 0);
-  const amountPaise = total * 100;
+  const payNow = async () => {
+    if (!user) {
+      return (window.location.href = '/login');
+    }
 
-  const pay = async () => {
-    const order = await createOrder({ amount: amountPaise }, token);
+    const { data } = await createOrder({ amount: total });
 
-    const rzp = new window.Razorpay({
+    const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: order.data.amount,
+      amount: data.amount,
       currency: 'INR',
-      order_id: order.data.id,
-      handler: async (res) => {
-        await verifyPayment({
-          razorpay_order_id: res.razorpay_order_id,
-          razorpay_payment_id: res.razorpay_payment_id,
-          razorpay_signature: res.razorpay_signature,
-          items,
-          amount: total,
-          userId: user.id
-        }, token);
-
-        clear();
+      order_id: data.id,
+      name: 'DMX Home Clean Products',
+      description: 'Order Payment',
+      handler: function (response) {
         window.location.href = '/success';
-      }
-    });
+      },
+      prefill: {
+        name: user.name,
+        email: user.email,
+      },
+      theme: {
+        color: '#0D6EFD',
+      },
+    };
 
+    const rzp = new window.Razorpay(options);
     rzp.open();
   };
 
+  if (!items.length) {
+    return (
+      <div className="p-8 text-center">
+        <h2 className="text-lg font-semibold">Your cart is empty</h2>
+        <a
+          href="/"
+          className="inline-block mt-3 px-5 py-2.5 bg-primary text-white rounded-lg text-sm"
+        >
+          Shop Now
+        </a>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-3 max-w-md mx-auto">
-      <h2 className="font-semibold text-lg mb-3">Checkout</h2>
-      <div>Total: ₹{total}</div>
-      <button className="bg-primary text-white rounded-md px-4 py-2 mt-3" onClick={pay}>
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
+      <h1 className="text-xl font-semibold text-gray-900">Checkout</h1>
+
+      {/* Order Review */}
+      <div className="bg-white border rounded-xl shadow-sm p-5 space-y-3">
+        <h2 className="font-medium text-gray-800">Order Items</h2>
+        {items.map((i) => (
+          <div key={i._id} className="flex justify-between text-sm">
+            <span>{i.title}</span>
+            <span>₹{i.price}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Total */}
+      <div className="bg-white border rounded-xl shadow-sm p-5">
+        <div className="flex justify-between text-base font-medium text-gray-900">
+          <span>Total Payable</span>
+          <span>₹{total}</span>
+        </div>
+      </div>
+
+      {/* Pay Button */}
+      <button
+        onClick={payNow}
+        className="w-full py-3 bg-primary text-white rounded-lg text-sm font-medium"
+      >
         Pay Now
       </button>
     </div>
