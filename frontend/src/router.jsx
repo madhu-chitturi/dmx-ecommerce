@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import ProductsPage from './pages/ProductsPage';
@@ -16,26 +16,21 @@ import AdminAddProduct from './pages/admin/AdminAddProduct';
 
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Storefront */}
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/product/:slug" element={<ProductPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/success" element={<SuccessPage />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/products" element={<ProductsPage />} />
+      <Route path="/product/:slug" element={<ProductPage />} />
+      <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/cart" element={<CartPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/success" element={<SuccessPage />} />
 
-        {/* Auth */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-        {/* Admin */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
-        <Route path="/admin/products/new" element={<AdminNewProduct />} />
-      </Routes>
-    </BrowserRouter>
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/products" element={<AdminProducts />} />
+      <Route path="/admin/products/new" element={<AdminNewProduct />} />
+    </Routes>
   );
 }
