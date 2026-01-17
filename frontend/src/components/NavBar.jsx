@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
-export default function Navbar() {
+export default function NavBar() {
   const { user } = useAuthStore();
 
   return (
