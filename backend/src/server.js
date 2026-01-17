@@ -10,10 +10,17 @@ import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
 
+// CREATE APP FIRST
+const app = express();
+
+// PARSE JSON FIRST
+app.use(express.json());
+
+// CORS MUST COME AFTER APP BUT BEFORE ROUTES
 app.use(cors({
   origin: [
-    "https://dmx-ecommerce.vercel.app",    // production frontend
-    "http://localhost:5173"                // local vite dev
+    "https://dmx-ecommerce.vercel.app",
+    "http://localhost:5173"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -22,9 +29,10 @@ app.use(cors({
 
 app.options('*', cors());
 
-
+// CONNECT DB AFTER ENV READY
 connectDB();
 
+// ROUTES AFTER CORS
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/products', productRoutes);
