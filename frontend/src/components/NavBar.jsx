@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
-import { ShoppingCartIcon } from 'lucide-react';
 
 export default function Navbar() {
   const { user } = useAuthStore();
@@ -10,14 +10,15 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Brand */}
-        <Link to="/" className="text-xl font-semibold text-primary">
+        <Link to="/" className="text-xl font-semibold text-primary tracking-wide">
           DMX
         </Link>
 
-        {/* Nav */}
-        <div className="flex items-center gap-6 text-sm font-medium">
+        {/* Nav Items */}
+        <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
           <Link to="/products" className="hover:text-primary">Products</Link>
           <Link to="/categories" className="hover:text-primary">Categories</Link>
+
           {user ? (
             <Link to="/profile" className="hover:text-primary">Account</Link>
           ) : (
@@ -25,8 +26,8 @@ export default function Navbar() {
           )}
 
           {/* Cart */}
-          <Link to="/cart" className="relative flex items-center">
-            <ShoppingCartIcon size={18} />
+          <Link to="/cart" className="hover:text-primary">
+            <ShoppingCart size={20} />
           </Link>
         </div>
       </div>
