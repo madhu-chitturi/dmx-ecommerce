@@ -1,4 +1,4 @@
-export default function OrderSuccessPage() {
+export default function SuccessPage() {
   return (
     <div className="p-10 text-center">
       <h1 className="text-2xl font-semibold text-primary">Order Successful</h1>
