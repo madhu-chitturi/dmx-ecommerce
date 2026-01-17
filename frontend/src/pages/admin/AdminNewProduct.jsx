@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from '../../api/axios';
 
-export default function AdminAddProduct() {
+export default function AdminNewProduct() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
