@@ -1,10 +1,15 @@
-import client from './client';
+import axios from './axios';
 
-export const fetchProducts = () => client.get('/products');
-export const fetchProduct = (slug) => client.get(`/products/${slug}`);
-export const addProduct = (formData, token) =>
-  client.post('/products', formData, { headers: { Authorization: `Bearer ${token}` } });
-export const updateProduct = (id, formData, token) =>
-  client.put(`/products/${id}`, formData, { headers: { Authorization: `Bearer ${token}` } });
-export const deleteProduct = (id, token) =>
-  client.delete(`/products/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+export const getProducts = () => {
+  return axios.get('/products');
+};
+
+export const getProduct = (slug) => {
+  return axios.get(`/products/${slug}`);
+};
+
+export const createProduct = (data, token) => {
+  return axios.post('/products', data, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};
