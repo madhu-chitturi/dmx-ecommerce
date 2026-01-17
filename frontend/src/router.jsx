@@ -12,7 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminProducts from './pages/admin/AdminProducts';
-import AdminAddProduct from './pages/admin/AdminAddProduct';
+import AdminNewProduct from './pages/admin/AdminNewProduct';
 
 export default function Router() {
   return (
