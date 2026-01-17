@@ -1,40 +1,42 @@
 import { useState } from 'react';
-import { adminLogin } from '../../api/auth';
-import { useAuthStore } from '../../store/authStore';
+import axios from '../../api/axios';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setAdmin = useAuthStore((s) => s.setAdmin);
 
-  const submit = async () => {
-    const res = await adminLogin({ email, password });
-    setAdmin(res.data.admin, res.data.token);
-    window.location.href = '/admin/products';
+  const loginAdmin = async () => {
+    try {
+      const res = await axios.post('/auth/login', { email, password });
+      localStorage.setItem('dmx_admin_token', res.data.token);
+      window.location.href = '/admin/products';
+    } catch (err) {
+      alert('Invalid credentials');
+    }
   };
 
   return (
-    <div className="p-3 max-w-sm mx-auto">
-      <h1 className="font-semibold text-lg mb-3">Admin Login</h1>
+    <div className="p-6 max-w-md mx-auto space-y-3">
+      <h1 className="text-xl font-semibold">Admin Login</h1>
 
       <input
         placeholder="Email"
-        className="border p-2 w-full mb-2 text-sm"
         onChange={(e) => setEmail(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
       />
 
       <input
-        placeholder="Password"
         type="password"
-        className="border p-2 w-full mb-3 text-sm"
+        placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
       />
 
       <button
-        onClick={submit}
-        className="bg-primary text-white w-full py-2 rounded-md text-sm"
+        onClick={loginAdmin}
+        className="w-full py-2 bg-primary text-white rounded text-sm"
       >
-        Login
+        Login as Admin
       </button>
     </div>
   );
