@@ -1,8 +1,0 @@
-# root ignore
-.DS_Store
-node_modules/
-dist/
-.env
-.env.*
-.idea/
-.vscode/
