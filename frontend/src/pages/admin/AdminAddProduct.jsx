@@ -1,50 +1,100 @@
 import { useState } from 'react';
-import { addProduct } from '../../api/products';
-import { useAuthStore } from '../../store/authStore';
+import axios from '../../api/axios';
 
-export default function AdminAddProduct() {
-  const adminToken = useAuthStore((s) => s.adminToken);
+export default function AdminNewProduct() {
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('detergent');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
 
-  const [form, setForm] = useState({
-    title: '',
-    category: '',
-    description: '',
-    price: '',
-    mrp: '',
-    stock: ''
-  });
-  const [file, setFile] = useState(null);
+  const upload = async (file) => {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET);
 
-  const change = (k, v) => setForm({ ...form, [k]: v });
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD}/image/upload`,
+      { method: 'POST', body: form }
+    );
+
+    const data = await res.json();
+    setImage(data.secure_url);
+  };
 
   const submit = async () => {
-    const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => fd.append(k, v));
-    if (file) fd.append('image', file);
+    const token = localStorage.getItem('dmx_admin_token');
 
-    await addProduct(fd, adminToken);
+    await axios.post('/products', {
+      title,
+      slug,
+      price: Number(price),
+      category,
+      description,
+      image,
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
     window.location.href = '/admin/products';
   };
 
   return (
-    <div className="p-3 max-w-md mx-auto">
-      <h1 className="font-semibold text-lg mb-3">Add Product</h1>
+    <div className="p-6 max-w-md mx-auto space-y-3">
+      <h1 className="text-xl font-semibold">New Product</h1>
 
-      {['title','category','description','price','mrp','stock'].map((f) => (
-        <input
-          key={f}
-          placeholder={f}
-          className="border p-2 w-full mb-2 text-sm"
-          onChange={(e) => change(f, e.target.value)}
-        />
-      ))}
+      <input
+        placeholder="Title"
+        onChange={(e) => setTitle(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
+      />
 
-      <input type="file" className="mb-3 text-sm" onChange={(e) => setFile(e.target.files[0])} />
+      <input
+        placeholder="Slug"
+        onChange={(e) => setSlug(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
+      />
 
-      <button className="bg-primary text-white w-full py-2 rounded-md text-sm"
-        onClick={submit}
+      <input
+        placeholder="Price"
+        type="number"
+        onChange={(e) => setPrice(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
+      />
+
+      <select
+        onChange={(e) => setCategory(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
       >
-        Save
+        <option value="detergent">Detergent</option>
+        <option value="dishwash">Dishwash</option>
+        <option value="handwash">Handwash</option>
+        <option value="floor">Floor Cleaner</option>
+      </select>
+
+      <textarea
+        placeholder="Description"
+        onChange={(e) => setDescription(e.target.value)}
+        className="border p-2 w-full rounded text-sm"
+      />
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => upload(e.target.files[0])}
+        className="border p-2 w-full rounded text-sm"
+      />
+
+      {image && (
+        <img src={image} className="w-32 h-32 rounded object-cover" />
+      )}
+
+      <button
+        onClick={submit}
+        className="w-full py-2 bg-primary text-white rounded text-sm"
+      >
+        Save Product
       </button>
     </div>
   );
