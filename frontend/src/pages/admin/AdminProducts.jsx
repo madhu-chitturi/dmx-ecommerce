@@ -31,21 +31,31 @@ export default function AdminProducts() {
       </div>
 
       <div className="space-y-3">
-        {products.map((p) => (
-          <div key={p._id} className="border rounded-lg p-3 flex items-center gap-4">
-            <img src={p.image} className="w-20 h-20 rounded-lg object-cover" />
-            <div className="flex-1">
-              <p className="font-medium">{p.title}</p>
-              <p className="text-sm text-gray-600">₹{p.price}</p>
-            </div>
-            <button
-              onClick={() => deleteProduct(p._id)}
-              className="text-red-500 text-xs"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {products.map(p => (
+  <div key={p._id} className="flex items-center justify-between border p-2">
+    <div>
+      <div className="font-semibold">{p.title}</div>
+      <div className="text-sm">{p.category}</div>
+    </div>
+
+    <div className="flex gap-2">
+      <button
+        onClick={() => navigate(`/admin/products/edit/${p._id}`)}
+        className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
+      >
+        Edit
+      </button>
+
+      <button
+        onClick={() => handleDelete(p._id)}
+        className="px-2 py-1 text-xs bg-red-600 text-white rounded"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+))}
+
       </div>
     </div>
   );
