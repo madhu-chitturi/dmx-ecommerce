@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 
 export default function AdminProducts() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
@@ -9,7 +11,7 @@ export default function AdminProducts() {
     setProducts(res.data);
   };
 
-  const deleteProduct = async (id) => {
+  const handleDelete = async (id) => {
     const token = localStorage.getItem('dmx_admin_token');
     await axios.delete(`/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -25,37 +27,40 @@ export default function AdminProducts() {
     <div className="p-6 max-w-5xl mx-auto space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-semibold">Admin Products</h1>
-        <a href="/admin/products/new" className="px-4 py-2 bg-primary text-white text-sm rounded">
+
+        <button
+          onClick={() => navigate('/admin/products/new')}
+          className="px-4 py-2 bg-primary text-white text-sm rounded"
+        >
           Add New Product
-        </a>
+        </button>
       </div>
 
       <div className="space-y-3">
         {products.map(p => (
-  <div key={p._id} className="flex items-center justify-between border p-2">
-    <div>
-      <div className="font-semibold">{p.title}</div>
-      <div className="text-sm">{p.category}</div>
-    </div>
+          <div key={p._id} className="flex items-center justify-between border p-2">
+            <div>
+              <div className="font-semibold">{p.title}</div>
+              <div className="text-sm">{p.category}</div>
+            </div>
 
-    <div className="flex gap-2">
-      <button
-        onClick={() => navigate(`/admin/products/edit/${p._id}`)}
-        className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
-      >
-        Edit
-      </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate(`/admin/products/edit/${p._id}`)}
+                className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
+              >
+                Edit
+              </button>
 
-      <button
-        onClick={() => handleDelete(p._id)}
-        className="px-2 py-1 text-xs bg-red-600 text-white rounded"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-))}
-
+              <button
+                onClick={() => handleDelete(p._id)}
+                className="px-2 py-1 text-xs bg-red-600 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
