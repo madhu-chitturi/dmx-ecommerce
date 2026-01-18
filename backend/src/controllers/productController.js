@@ -20,21 +20,20 @@ export const getProduct = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { title, category, description, price, mrp, stock } = req.body;
+  const { title, slug, category, description, price, image } = req.body;
 
-  const p = await Product.create({
+  const product = await Product.create({
     title,
-    slug: slugify(title),
+    slug,
     category,
     description,
     price,
-    mrp,
-    stock,
-    image: req.file?.path // Cloudinary provides URL in path
+    image,         // THIS FIXES DB
   });
 
-  return res.json(p);
+  res.json(product);
 };
+
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
