@@ -6,12 +6,7 @@ const productSchema = new mongoose.Schema({
   category: String,
   description: String,
   price: Number,
-  mrp: Number,
-  stock: Number,
-  image: {
-  type: String,
-  required: false
-},      // Cloudinary URL
-});
+  image: String,   // IMPORTANT
+}, { timestamps: true });
 
 export default mongoose.model('Product', productSchema);
