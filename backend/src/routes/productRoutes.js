@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.get('/', listProducts);
 router.get('/id/:id', getProductById);
-router.get('/:slug');
+router.get('/:slug', getProduct);
+
 
 // admin protected
 router.post('/', auth, admin, createProduct);
