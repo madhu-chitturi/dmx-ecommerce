@@ -8,7 +8,10 @@ const productSchema = new mongoose.Schema({
   price: Number,
   mrp: Number,
   stock: Number,
-  image: String,      // Cloudinary URL
+  image: {
+  type: String,
+  required: false
+},      // Cloudinary URL
 });
 
 export default mongoose.model('Product', productSchema);
