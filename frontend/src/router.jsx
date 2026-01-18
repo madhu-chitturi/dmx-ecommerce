@@ -13,6 +13,8 @@ import RegisterPage from './pages/RegisterPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminNewProduct from './pages/admin/AdminNewProduct';
+import AdminEditProduct from "./pages/admin/AdminEditProduct";
+
 
 export default function Router() {
   return (
@@ -31,6 +33,8 @@ export default function Router() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/products" element={<AdminProducts />} />
       <Route path="/admin/products/new" element={<AdminNewProduct />} />
+      <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
+
     </Routes>
   );
 }
