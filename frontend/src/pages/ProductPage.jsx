@@ -25,7 +25,12 @@ export default function ProductPage() {
 
         <div className="space-y-3">
           <h1 className="text-2xl font-semibold text-gray-900">{product.title}</h1>
-          <p className="text-primary font-semibold text-xl">₹{product.price}</p>
+          <div>
+  <span className="line-through text-gray-500">₹{v.mrp}</span>
+  <span className="font-semibold text-primary ml-2">₹{v.offerPrice}</span>
+</div>
+
+      
           <p className="text-gray-600 text-sm">{product.description}</p>
 
           <button
