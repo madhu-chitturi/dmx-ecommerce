@@ -5,8 +5,16 @@ const productSchema = new mongoose.Schema({
   slug: String,
   category: String,
   description: String,
-  price: Number,
-  image: String,   // IMPORTANT
+  image: String,
+
+  variants: [
+    {
+      size: String,
+      mrp: Number,         // Maximum Retail Price
+      offerPrice: Number,  // Discounted Selling Price
+    }
+  ],
+
 }, { timestamps: true });
 
 export default mongoose.model('Product', productSchema);
