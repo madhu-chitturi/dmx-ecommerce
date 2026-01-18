@@ -7,7 +7,8 @@ import admin from '../middleware/admin.js';
 const router = express.Router();
 
 router.get('/', listProducts);
-router.get('/:slug', getProduct);
+router.get('/id/:id', getProductById);
+router.get('/:slug');
 
 // admin protected
 router.post('/', auth, admin, createProduct);
