@@ -34,17 +34,15 @@ export const createProduct = async (req, res) => {
   res.json(product);
 };
 
-
 export const updateProduct = async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.json(product);
+}
 
-  if (body.title) body.slug = slugify(body.title);
-  if (req.file) body.image = req.file.path;
-
-  const p = await Product.findByIdAndUpdate(id, body, { new: true });
-  return res.json(p);
-};
 
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
