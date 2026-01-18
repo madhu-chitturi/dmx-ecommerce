@@ -56,6 +56,15 @@ export default function AdminNewProduct() {
         className="border p-2 w-full rounded text-sm"
       />
 
+      {variants.map((v, i) => (
+  <div key={i} className="flex gap-2">
+    <input placeholder="Size (e.g. 1L)"     value={v.size}       onChange={...} />
+    <input placeholder="MRP" type="number"  value={v.mrp}        onChange={...} />
+    <input placeholder="Offer" type="number" value={v.offerPrice} onChange={...} />
+  </div>
+))}
+<button onClick={addVariant}>+ Add Variant</button>
+
       <input
         placeholder="Price"
         type="number"
