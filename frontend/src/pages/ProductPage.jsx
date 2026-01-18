@@ -1,55 +1,72 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getProduct } from '../api/products';
-import { useCartStore } from '../store/cartStore';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "../api/axios";
 
 export default function ProductPage() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
-  const add = useCartStore((s) => s.add);
+  const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    getProduct(slug).then((res) => setProduct(res.data));
-  }, [slug]);
+  const load = async () => {
+    const res = await axios.get(`/products/${slug}`);
+    setProduct(res.data);
+  };
 
-  if (!product) return <div className="p-8">Loading...</div>;
+  useEffect(() => { load(); }, [slug]);
+
+  if (!product) return <div className="p-6">Loading...</div>;
+
+  const selected = product.variants[active];
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-10">
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="p-6 max-w-3xl mx-auto space-y-4">
+
+      {product.image && (
         <img
           src={product.image}
-          className="w-full rounded-xl shadow-md object-cover"
-          alt={product.title}
+          className="w-full h-72 object-cover rounded"
         />
+      )}
 
-        <div className="space-y-3">
-          <h1 className="text-2xl font-semibold text-gray-900">{product.title}</h1>
-          <div>
-  <span className="line-through text-gray-500">₹{v.mrp}</span>
-  <span className="font-semibold text-primary ml-2">₹{v.offerPrice}</span>
-</div>
+      <div className="space-y-1">
+        <h1 className="text-xl font-semibold">{product.title}</h1>
+        <div className="text-sm text-gray-500">{product.category}</div>
+      </div>
 
-      
-          <p className="text-gray-600 text-sm">{product.description}</p>
-
+      {/* variant tiles */}
+      <div className="flex gap-2">
+        {product.variants.map((v, i) => (
           <button
-            onClick={() => add(product)}
-            className="mt-3 px-5 py-2.5 text-sm bg-primary text-white rounded-lg"
+            key={i}
+            onClick={() => setActive(i)}
+            className={`px-3 py-1 rounded border text-sm ${
+              i === active ? "border-primary text-primary" : "border-gray-300"
+            }`}
           >
-            Add to Cart
+            {v.size}
           </button>
+        ))}
+      </div>
+
+      {/* price area */}
+      <div className="space-y-1">
+        <div className="flex gap-2 items-center">
+          <span className="line-through text-gray-500 text-sm">
+            ₹{selected.mrp}
+          </span>
+          <span className="text-primary font-semibold text-lg">
+            ₹{selected.offerPrice}
+          </span>
         </div>
       </div>
 
-      <section className="space-y-2">
-        <h2 className="text-lg font-medium">Product Benefits</h2>
-        <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
-          <li>Deep cleaning and deodorizing</li>
-          <li>Everyday home-safe formulation</li>
-          <li>Premium concentrated solution</li>
-        </ul>
-      </section>
+      {product.description && (
+        <p className="text-sm text-gray-700 whitespace-pre-line">
+          {product.description}
+        </p>
+      )}
+
+      {/* Add-to-cart skipped due to A */}
     </div>
   );
 }
